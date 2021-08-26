@@ -86,6 +86,13 @@ describe('convertToRgb', () => {
         expect(convertToRgb(hex)).toBe('#ff0000');
     });
 
+    it('converts rgba to hex', () => {
+        const input = 'rgba(56, 132, 217, 0.15)';
+        const output = '#3884d926';
+
+        expect(convertToRgb(input)).toBe(output);
+    });
+
     it('transforms a gradient string to rgb values', () => {
         const gradient1 = 'linear-gradient(rgb(#ff0000, 0.5) 0%, #ffffff 100%)';
         const gradient2 = 'linear-gradient(rgb(#ff0000, 0.5) 0%, rgba(#ffffff, 1) 100%)';

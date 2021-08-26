@@ -59,7 +59,7 @@ export function convertToRgb(color: string) {
                         [r, g, b, alpha = '1'] = matchedColor.split(',').map((n) => n.trim());
                     }
                     const a = convertOpacityToFigma(alpha);
-                    returnedColor = returnedColor.split(matchedString).join(RGBAToHexA(r, g, b, a));
+                    returnedColor = returnedColor.split(matchedString).join(`rgba(${r}, ${g}, ${b}, ${a})`);
                 });
             }
         } catch (e) {
