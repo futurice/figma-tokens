@@ -1,3 +1,4 @@
+import {uniqWith, isEqual} from 'lodash';
 import {appendTypeToToken} from '@/app/components/createTokenObj';
 import getAliasValue from '@/utils/aliases';
 import checkIfAlias from '@/utils/checkIfAlias';
@@ -60,16 +61,13 @@ export function resolveTokenValues(tokens, previousCount = undefined) {
 
 export function mergeTokenGroups(tokens, usedSets = []): SingleTokenObject[] {
     const mergedTokens = [];
-    // Reverse token set order (right-most win) and check for duplicates
-    Object.entries(tokens)
-        .reverse()
-        .forEach((tokenGroup: [string, SingleTokenObject[]]) => {
-            if (!usedSets || usedSets.length === 0 || usedSets.includes(tokenGroup[0])) {
-                tokenGroup[1].forEach((token) => {
-                    if (!mergedTokens.some((t) => t.name === token.name))
-                        mergedTokens.push({...appendTypeToToken(token), internal__Parent: tokenGroup[0]});
-                });
-            }
-        });
-    return mergedTokens;
+    Object.entries(tokens).forEach((tokenGroup: [string, SingleTokenObject[]]) => {
+        if (!usedSets || usedSets.length === 0 || usedSets.includes(tokenGroup[0])) {
+            tokenGroup[1].forEach((token) => {
+                mergedTokens.push({...appendTypeToToken(token), internal__Parent: tokenGroup[0]});
+            });
+        }
+    });
+    // remove duplicate objects
+    return uniqWith(mergedTokens, isEqual);
 }
